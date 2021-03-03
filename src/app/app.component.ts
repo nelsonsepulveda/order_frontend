@@ -31,7 +31,6 @@ export class AppComponent implements OnInit {
     try {
       this.loading = true
       const rt:any =await  this.orderService.getOrders(this.pageInfo.current_page, this.pageInfo.per_page, this.strSearch);
-      console.log(rt)
       this.orders = rt.data.map(item => ({
         id: item.id,
         ...item.attributes
@@ -51,17 +50,15 @@ export class AppComponent implements OnInit {
     } else if(item.status === 'pending'){
       item.status = 'cancelled'
     } else {
-      
+
     }
     try{
-      const rt =await this.orderService.updateOrder(item.id, item.status)
-      console.log(rt);
+      await this.orderService.updateOrder(item.id, item.status)
     } catch(err){
       console.log(err);
     }
   }
   pageChanged($event) {
-    console.log($event)
     this.pageInfo.current_page = $event.page;
     this.refreshData();    
   }

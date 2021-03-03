@@ -13,6 +13,6 @@ export class OrderService {
   }
 
   updateOrder(id, status) {
-    return this.http.put(`/api/update/${id}/${status}`,{status: status}).toPromise();
+    return this.http.put(`/api/orders/${id}`, {status: status}).toPromise();
   }
 }

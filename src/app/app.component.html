@@ -4,7 +4,7 @@
   </div>
   
   <div class="form-group d-flex justify-content-end mr-3">
-    <input type="text" class="form-control mr-3" placeholder="Enter search string" [(ngModel)]="strSearch">
+    <input type="text" class="form-control mr-3" placeholder="Enter search string" [(ngModel)]="strSearch" (keyup.enter)="refreshData()">
     <button type="button" class="btn btn-primary text-capitalize" (click)="refreshData()" [style.width.px]="120">Search</button>
   </div>
 
@@ -37,7 +37,7 @@
         <td>{{item.amount}}</td>
         <td>
           <button type="button" class="btn text-capitalize"
-            [ngClass]="item.status=='cancelled'?'btn-danger':'btn-primary'" 
+            [ngClass]="item.status=='cancelled'?'btn-danger':item.status=='in_production'?'btn-info':'btn-success'" 
             [disabled]="item.status=='cancelled'?true:false" 
             (click)="changeStatus(item)"
             [style.width.px]="120">
@@ -48,7 +48,15 @@
     </tbody>
   </table>
   <div class="d-flex justify-content-center">
-    <pagination (pageChanged)="pageChanged($event)" *ngIf="pageInfo" [totalItems]="pageInfo.total"
+    
+      <select class="form-control mr-3" [style.max-width.px]="80" [(ngModel)]="pageInfo.per_page" (change)="pageInfo.current_page=1; refreshData()">
+        <option>5</option>
+        <option>10</option>
+        <option>20</option>
+        <option>50</option>
+      </select>
+    
+    <pagination (pageChanged)="pageChanged($event)" *ngIf="pageInfo" [itemsPerPage]="pageInfo.per_page" [totalItems]="pageInfo.total" [maxSize]="5"
       [(ngModel)]="pageInfo.current_page"></pagination>
   </div>
 </div>
